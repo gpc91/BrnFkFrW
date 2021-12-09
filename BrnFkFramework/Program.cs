@@ -10,12 +10,34 @@ namespace BrnFkFramework
     {
         public static void Main(string[] args)
         {
+            /*
             string file = File.ReadAllText("test.b");
-            //Console.WriteLine(file);
             new Compiler(file, new Data()).RegisterProcessor().Run();
+            */
+            Memory memory = new Memory(2);
+            memory.PointerOverflow = OverflowBehaviour.Block;
             
-            //new Compiler("+>+>+>+<+<+<+>+>+>+", new Data(4)).Run();
-            //new Compiler("+++>++++[-<+>]<.", new Data()).Run();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            memory.Next();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            memory.Next();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            memory.Next();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            memory.Next();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            
+            Console.WriteLine("=====================");
+            
+            memory.Prev();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            memory.Prev();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            memory.Prev();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            memory.Prev();
+            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
+            
         }
     }
 
@@ -59,7 +81,7 @@ namespace BrnFkFramework
         
         public void Run()
         {
-            while (!isEof)
+            while (!IsEOF)
             {
                 Consume();
             }
@@ -82,9 +104,9 @@ namespace BrnFkFramework
             {'<', new MemoryShiftLeftCommand()},
             {'[', new ConditionalLeftCommand()},
             {']', new ConditionalRightCommand()},
-            {' ', new WhitespaceCommand()},
+            //{' ', new WhitespaceCommand()},
             {'#', new CommentCommand()},
-            {'\n', new WhitespaceCommand()}
+            //{'\n', new WhitespaceCommand()}
         };
         
         public static void Process(char input)
@@ -101,7 +123,6 @@ namespace BrnFkFramework
                 _compiler.InstructionPointer++;
                 //throw;
             }
-            
         }
 
         public static void Compiler(Compiler compiler)
@@ -277,7 +298,7 @@ namespace BrnFkFramework
             get { return data[pointer]; }
             set { data[pointer] = value; }
         }
-
+        
         private int pointer = 0;
         public int Pointer => pointer;
 

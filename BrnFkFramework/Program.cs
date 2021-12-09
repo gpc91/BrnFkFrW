@@ -11,7 +11,7 @@ namespace BrnFkFramework
         public static void Main(string[] args)
         {
             string file = File.ReadAllText("test.b");
-            Console.WriteLine(file);
+            //Console.WriteLine(file);
             new Compiler(file, new Data()).RegisterProcessor().Run();
             
             //new Compiler("+>+>+>+<+<+<+>+>+>+", new Data(4)).Run();
@@ -83,13 +83,25 @@ namespace BrnFkFramework
             {'[', new ConditionalLeftCommand()},
             {']', new ConditionalRightCommand()},
             {' ', new WhitespaceCommand()},
-            {'#', new CommentCommand()}
+            {'#', new CommentCommand()},
+            {'\n', new WhitespaceCommand()}
         };
         
         public static void Process(char input)
         {
-            Commands[input]?.Execute(_compiler);
-            _compiler.InstructionPointer++;
+            try
+            {
+                // TODO: Try/Catch for unrecognised chars
+                Commands[input]?.Execute(_compiler);
+                _compiler.InstructionPointer++;
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine(e);
+                _compiler.InstructionPointer++;
+                //throw;
+            }
+            
         }
 
         public static void Compiler(Compiler compiler)
@@ -121,12 +133,15 @@ namespace BrnFkFramework
                         Console.WriteLine($"{(char)compiler.Memory.Value} ({compiler.Memory.Value})");
                         compiler.InstructionPointer++;
                         return;
+                    case '£' :
+                        Console.Write($"{(char)compiler.Memory.Value} ({compiler.Memory.Value})");
+                        compiler.InstructionPointer++;
+                        return;
                     default :
                         Console.Write($"{(char)compiler.Memory.Value}");
                         //Console.WriteLine($"[\x1b[33m'.'\x1b[0m, {ip}]\t[\x1b[36m{data.Pointer}\x1b[0m] {data.Value} ::'{(char)data.Value}'");
                         return;
                 }
-                return;
                 //Console.WriteLine($"[\x1b[33m'.'\x1b[0m, {ip}]\t[\x1b[36m{data.Pointer}\x1b[0m] {data.Value} ::{data.Value}");
             }
         }
@@ -213,6 +228,7 @@ namespace BrnFkFramework
     {
         public void Execute(Compiler compiler)
         {
+            // TODO: skip behaviour - if the value at cell is 0 proceed along source until we hit '[' or ']'?
             int entry = ++compiler.InstructionPointer;
             while (!compiler.IsEOF)
             {

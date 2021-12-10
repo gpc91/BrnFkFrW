@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using BrnFkFramework.Brainfuck;
 
 namespace BrnFkFramework
 {
@@ -10,37 +11,17 @@ namespace BrnFkFramework
     {
         public static void Main(string[] args)
         {
+
+            Parser parser = new Parser().UseInterpreter(new BrainfuckInterpreter());
+            parser.ParseString(",.");
+            
             /*
             string file = File.ReadAllText("test.b");
             new Compiler(file, new Data()).RegisterProcessor().Run();
             */
-            Memory memory = new Memory(2);
-            memory.PointerOverflow = OverflowBehaviour.Block;
-            
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            memory.Next();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            memory.Next();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            memory.Next();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            memory.Next();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            
-            Console.WriteLine("=====================");
-            
-            memory.Prev();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            memory.Prev();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            memory.Prev();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            memory.Prev();
-            Console.WriteLine($"{memory.Pointer}: {memory.Cell}");
-            
         }
     }
-
+/*
     internal class Compiler
     {
         private int ip = 0; // instruction pointer
@@ -88,12 +69,12 @@ namespace BrnFkFramework
         }
 
     }
-
+/*
     internal static class Processor
     {
         private static Compiler _compiler;
         
-        private static Dictionary<char, ICommand> Commands = new Dictionary<char, ICommand>()
+        private static Dictionary<char, IInstruction> Commands = new Dictionary<char, IInstruction>()
         {
             {'.', new PrintCommand()},
             {'^', new TestCommand()},
@@ -132,13 +113,7 @@ namespace BrnFkFramework
         
         
     }
-
-    internal interface ICommand
-    {
-        public void Execute(Compiler compiler);
-    }
-
-    internal class PrintCommand : ICommand
+    internal class PrintCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -168,7 +143,7 @@ namespace BrnFkFramework
         }
     }
 
-    internal class ReadCommand : ICommand
+    internal class ReadCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -176,7 +151,7 @@ namespace BrnFkFramework
         }
     }
 
-    internal class WhitespaceCommand : ICommand
+    internal class WhitespaceCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -194,7 +169,7 @@ namespace BrnFkFramework
         }
     }
 
-    internal class CommentCommand : ICommand
+    internal class CommentCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -213,7 +188,7 @@ namespace BrnFkFramework
         }
     }
 
-    internal class MemoryAddCommand : ICommand
+    internal class MemoryAddCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -221,7 +196,7 @@ namespace BrnFkFramework
         }
     }
 
-    internal class MemorySubtractCommand : ICommand
+    internal class MemorySubtractCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -229,7 +204,7 @@ namespace BrnFkFramework
         }
     }
 
-    internal class MemoryShiftRightCommand : ICommand
+    internal class MemoryShiftRightCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -237,7 +212,7 @@ namespace BrnFkFramework
         }
     }
 
-    internal class MemoryShiftLeftCommand : ICommand
+    internal class MemoryShiftLeftCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -245,7 +220,7 @@ namespace BrnFkFramework
         }
     }
     
-    internal class ConditionalLeftCommand : ICommand
+    internal class ConditionalLeftCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -270,7 +245,7 @@ namespace BrnFkFramework
         }
     }
     
-    internal class ConditionalRightCommand : ICommand
+    internal class ConditionalRightCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
@@ -278,14 +253,14 @@ namespace BrnFkFramework
         }
     }
 
-    internal class TestCommand : ICommand
+    internal class TestCommand : IInstruction
     {
         public void Execute(Compiler compiler)
         {
             Console.WriteLine("This is a test command!");
         }
     }
-    
+    */
     
     internal class Data
     {

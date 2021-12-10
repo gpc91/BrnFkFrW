@@ -76,10 +76,6 @@ namespace BrnFkFramework
         public void Right() => Next();
         public void Left() => Prev();
         
-        public override string ToString()
-        {
-            return base.ToString();
-        }
     }
 
     public enum OverflowBehaviour

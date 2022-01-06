@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 
 namespace BrnFkFramework
@@ -13,14 +14,21 @@ namespace BrnFkFramework
     {
 
         public Parser SourceParser { get; set; }
-        
+
         internal Memory WorkingMemory { get; set; }
-        
+
+        internal StreamReader InputStream { get; }
+
         internal Dictionary<char, IInstruction> Instructions { get; set; }
 
         protected Interpreter(int memorySize = 30000)
         {
             WorkingMemory = new Memory(memorySize);
+        }
+
+        public Parser Parse()
+        {
+            return SourceParser = new Parser(this);
         }
 
         public void Execute(char input)
@@ -35,9 +43,12 @@ namespace BrnFkFramework
             }
         }
 
-        public void Execute(ParseWorker pw)
+        public void Execute(Parser parser)
         {
-            
+            try
+            {
+                Instructions[(char)this.InputStream.Read()]?.Execute(parser);
+            }
         }
 
         /// <summary>

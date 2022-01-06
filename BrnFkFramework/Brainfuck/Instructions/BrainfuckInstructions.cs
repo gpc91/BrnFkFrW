@@ -8,6 +8,10 @@ namespace BrnFkFramework.Brainfuck.Instructions
         {
             interpreter.WorkingMemory.Add();
         }
+        public void Execute(Parser parser)
+        {
+            parser.Interpreter.WorkingMemory.Add();
+        }
     }
     
     public class BrainfuckSub : IInstruction
@@ -15,6 +19,10 @@ namespace BrnFkFramework.Brainfuck.Instructions
         public void Execute(Interpreter interpreter)
         {
             interpreter.WorkingMemory.Sub();
+        }
+        public void Execute(Parser parser)
+        {
+            parser.Interpreter.WorkingMemory.Sub();
         }
     }
     public class BrainfuckPrint : IInstruction
@@ -40,7 +48,17 @@ namespace BrnFkFramework.Brainfuck.Instructions
                     Console.Write($"{(char)cell}");
                     return;
             }
-        }   
+        } 
+        public void Execute(Parser parser)
+        {
+            byte cell = parser.Interpreter.WorkingMemory.Cell;
+            switch ((char) parser.Interpreter.SourceParser.NextInstruction)
+            {
+                case '!' :
+                    Console.WriteLine($"{cell}");
+                    parser.Interpreter.SourceParser.Reader.BaseStream.Position++;
+            }
+        }
     }
     public class BrainfuckRead : IInstruction
     {
@@ -65,6 +83,10 @@ namespace BrnFkFramework.Brainfuck.Instructions
        
             }
         }
+        public void Execute(Parser parser)
+        {
+            
+        }
     }
 
     public class BrainfuckRight : IInstruction
@@ -73,6 +95,10 @@ namespace BrnFkFramework.Brainfuck.Instructions
         {
             interpreter.WorkingMemory.Right();
         }
+        public void Execute(Parser parser)
+        {
+            
+        }
     }
     public class BrainfuckLeft : IInstruction
     {
@@ -80,12 +106,14 @@ namespace BrnFkFramework.Brainfuck.Instructions
         {
             interpreter.WorkingMemory.Left();
         }
+        public void Execute(Parser parser)
+        {
+            
+        }
     }
 
     public class BrainfuckCondLeft : IInstruction
     {
-        
-        
         public void Execute(Interpreter interpreter)
         {
             if (interpreter.WorkingMemory.Cell > 0)
@@ -94,11 +122,16 @@ namespace BrnFkFramework.Brainfuck.Instructions
             }
             else
             {
-                while ((char)interpreter.SourceParser.stream.Peek() != ']')
+                while ((char)interpreter.SourceParser.Stream.Peek() != ']')
                 {
-                    interpreter.SourceParser.stream.Read();
+                    interpreter.SourceParser.Stream.Read();
                 }
             }
+        }
+        
+        public void Execute(Parser parser)
+        {
+            
         }
     }
     
@@ -108,8 +141,13 @@ namespace BrnFkFramework.Brainfuck.Instructions
         {
             if (interpreter.WorkingMemory.Cell > 0)
             {
-                interpreter.SourceParser.stream.BaseStream.Position = 
+                //interpreter.SourceParser.Stream.BaseStream.Position = // should be parser entry
             }
+        }
+
+        public void Execute(Parser parser)
+        {
+            
         }
     }
 }

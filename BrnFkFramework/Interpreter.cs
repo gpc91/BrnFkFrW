@@ -17,7 +17,7 @@ namespace BrnFkFramework
 
         internal Memory WorkingMemory { get; set; }
 
-        internal StreamReader InputStream { get; }
+        internal String InputString { get; set; }
 
         internal Dictionary<char, IInstruction> Instructions { get; set; }
 
@@ -29,7 +29,6 @@ namespace BrnFkFramework
         public Parser Parse()
         {
             SourceParser = new Parser(this);
-            Console.WriteLine(SourceParser);
             return SourceParser;
             
         }
@@ -38,7 +37,8 @@ namespace BrnFkFramework
         {
             try
             {
-                char instruction = (char) parser.Stream.Read();
+                char instruction = (char) SourceParser.Read();
+                //Console.WriteLine(instruction);
                 //Console.WriteLine($"attempting execution of instruction {instruction}");
                 Instructions[instruction]?.Execute(parser);
             }
@@ -63,7 +63,6 @@ namespace BrnFkFramework
             sb.Remove(sb.Length-2, 2).Append("]");
             Console.WriteLine(sb);
             sb.Clear();
-            sb = null;
         }
         
     }

@@ -19,11 +19,8 @@ namespace BrnFkFramework
             */
 
             BrainfuckInterpreter bfi = new BrainfuckInterpreter();
-            bfi.Parse().ParseString("+.@[.@-.@]");
-            bfi.PrintMemory();
-            
-            
-            
+            bfi.Parse().ParseString(",!.#>,.@.#<[>-<+].#");
+
             // Change all of the below to make the 'root' be the interpreter.
             //Parser parser = new Parser().UseInterpreter(new BrainfuckInterpreter());
             //parser.ParseString(">>>,>>,!<<<<<+++.@>.@+++++.@<.@>.@");

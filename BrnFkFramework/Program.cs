@@ -5,29 +5,17 @@ using System.Diagnostics;
 using System.IO;
 using BrnFkFramework.Brainfuck;
 
+using Serilog;
+
 namespace BrnFkFramework
 { 
     internal class  Program
     {
         public static void Main(string[] args)
         {
-
-            /*
-            BrainfuckRunner brainfuck = new BrainfuckRunner();
-            brainfuck.Debug("+++.@");
-            brainfuck.PrintMemory();
-            */
-
             BrainfuckInterpreter bfi = new BrainfuckInterpreter();
-            bfi.Parse().ParseString(",!.#>,.@.#<[>-<+].#");
-
-            // Change all of the below to make the 'root' be the interpreter.
-            //Parser parser = new Parser().UseInterpreter(new BrainfuckInterpreter());
-            //parser.ParseString(">>>,>>,!<<<<<+++.@>.@+++++.@<.@>.@");
-            //parser.Interpreter.PrintMemory();
-
-            //parser.ParseString("+++[.@-].@");
-
+            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Debug().CreateLogger());
+            bfi.Parse().ParseString("+++>++[-<+>].#");
         }
     }
     internal class Data

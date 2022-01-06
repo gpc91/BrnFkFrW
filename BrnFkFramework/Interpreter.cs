@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Text;
+using Serilog.Core;
 
 namespace BrnFkFramework
 {
@@ -38,6 +36,7 @@ namespace BrnFkFramework
             try
             {
                 char instruction = (char) SourceParser.Read();
+                logger?.Verbose($"Attempting to execute instruction '{instruction}'");
                 //Console.WriteLine(instruction);
                 //Console.WriteLine($"attempting execution of instruction {instruction}");
                 Instructions[instruction]?.Execute(parser);
@@ -55,6 +54,7 @@ namespace BrnFkFramework
         /// <param name="limit">how many blocks of memory to read</param>
         public void PrintMemory(int start = 0, int limit = 8)
         {
+            logger?.Debug("Printing Memory Block.");
             StringBuilder sb = new StringBuilder().Append("[");
             for (int i = 0; i < limit; i++)
             {
@@ -63,6 +63,13 @@ namespace BrnFkFramework
             sb.Remove(sb.Length-2, 2).Append("]");
             Console.WriteLine(sb);
             sb.Clear();
+        }
+
+        internal Logger logger;
+        public void UseLogger(Logger logger)
+        {
+            this.logger = logger;
+            this.logger.Information("Logger added.");
         }
         
     }

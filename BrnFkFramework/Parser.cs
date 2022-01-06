@@ -39,7 +39,8 @@ namespace BrnFkFramework
         {
             Interpreter = interpreter;
             entry = Interpreter?.SourceParser?.Pointer != null ? Interpreter.SourceParser.Pointer : 0;
-            //Interpreter.SourceParser.Stream.BaseStream.Position;
+            Interpreter?.logger?.Debug($"Created Parser with entry point at {entry}");
+           
         }
 
         public void Run()
@@ -56,6 +57,7 @@ namespace BrnFkFramework
         /// <param name="file"></param>
         public void ParseFile(string file)
         {
+            /*
             try
             {
                 using (FileStream fs = File.OpenRead(file))
@@ -72,6 +74,10 @@ namespace BrnFkFramework
                 Console.WriteLine(e);
                 throw;
             }
+            */
+            Interpreter.logger?.Debug($"Attempting to parse file: {file}");
+            Interpreter.InputString = File.ReadAllText(file);
+            Run();
         }
 
         public void ParseString(string str)
@@ -87,6 +93,7 @@ namespace BrnFkFramework
                 }
             }
             */
+            Interpreter.logger?.Debug("Attempting to parse string.");
             Interpreter.InputString = str;
             Run();
         }

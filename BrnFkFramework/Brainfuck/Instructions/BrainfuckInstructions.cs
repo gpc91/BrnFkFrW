@@ -7,6 +7,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
     {
         public void Execute(Parser parser)
         {
+            parser.Interpreter.logger?.Verbose("Cell Add");
             parser.Interpreter.WorkingMemory.Add();
         }
     }
@@ -15,6 +16,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
     {
         public void Execute(Parser parser)
         {
+            parser.Interpreter.logger?.Verbose("Cell Subtract");
             parser.Interpreter.WorkingMemory.Sub();
         }
     }
@@ -26,22 +28,27 @@ namespace BrnFkFramework.Brainfuck.Instructions
             switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
             {
                 case '!' :
+                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '!' (Int)");
                     Console.WriteLine($"{cell}");
                     parser.Interpreter.SourceParser.Pointer++;
                     return;
                 case '@':
+                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '@' (Ext)");
                     Console.WriteLine($"{(char)cell} ({cell})");
                     parser.Interpreter.SourceParser.Pointer++;
                     return;
                 case '£' :
+                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '£' (Int Ext)");
                     Console.WriteLine($"{cell} ({(int)cell})");
                     parser.Interpreter.SourceParser.Pointer++;
                     return;
                 case '#' :
+                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '#' (Mem)");
                     parser.Interpreter.PrintMemory();
                     parser.Interpreter.SourceParser.Pointer++;
                     break;
                 default :
+                    parser.Interpreter.logger?.Verbose($"Print instruction");
                     Console.Write($"{(char) cell}");
                     return;
             }
@@ -54,18 +61,24 @@ namespace BrnFkFramework.Brainfuck.Instructions
             switch (parser.Interpreter.InputString[(int)parser.Interpreter.SourceParser.Pointer])
             {
                 case '!' :
+                    parser.Interpreter.logger?.Verbose($"Read instruction with modifier '!' (Char)");
                     byte val = (byte) Console.Read();
                     parser.Interpreter.WorkingMemory.Cell = val;
                     Console.WriteLine(); // clear to next line to correct printing
                     return;
                 default:
+                    parser.Interpreter.logger?.Verbose($"Read instruction (Explicit)");
                     byte _b;
                     if (byte.TryParse(Console.ReadLine(), out _b))
                     {
                         parser.Interpreter.WorkingMemory.Cell = _b;
                         return;
                     }
-                    throw new Exception("Failed to read input.");
+                    else
+                    {
+                        parser.Interpreter.logger?.Fatal($"Explicit Read instruction failed.");
+                        throw new Exception("Failed to read input.");
+                    }
             }
         }
     }
@@ -74,6 +87,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
     {
         public void Execute(Parser parser)
         {
+            parser.Interpreter.logger?.Verbose("Shift right");
             parser.Interpreter.WorkingMemory.Right();
         }
     }
@@ -81,6 +95,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
     {
         public void Execute(Parser parser)
         {
+            parser.Interpreter.logger?.Verbose("Shift left");
             parser.Interpreter.WorkingMemory.Left();
         }
     }
@@ -89,16 +104,22 @@ namespace BrnFkFramework.Brainfuck.Instructions
     { 
         public void Execute(Parser parser)
         {
+            parser.Interpreter.logger?.Debug("Checking conditional '[' ");
             if (parser.Interpreter.WorkingMemory.Cell > 0)
             {
+                parser.Interpreter.logger?.Debug($"Value {parser.Interpreter.WorkingMemory.Cell} at memory cell {parser.Interpreter.WorkingMemory.Pointer} is greater than 0. Condition met.");
                 new Parser(parser.Interpreter).Run();
             }
             else
             {
+                parser.Interpreter.logger?.Debug($"Condition was not met at memory cell {parser.Interpreter.WorkingMemory.Pointer}, skipping block...");
+                int skips = 0;
                 while ((char) parser.Interpreter.SourceParser.Stream.Peek() != ']')
                 {
                     parser.Interpreter.SourceParser.Pointer++;
+                    skips++;
                 }
+                parser.Interpreter.logger?.Debug($"Skipped {skips} character.");
             }
         }
     }

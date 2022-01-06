@@ -7,18 +7,160 @@ using BrnFkFramework.Brainfuck;
 
 namespace BrnFkFramework
 {
+
+    internal class Runner
+    {
+        internal TestParser parser;
+        internal int entry = 0;
+
+        internal Runner(TestParser tp = null)
+        {
+            parser = tp;
+            entry = tp.ptr;
+            //Console.WriteLine($"New Runner created with entry point {entry}[{tp.str[entry]}]");
+            Run();
+        }
+
+        internal void Incr()
+        {
+            if (parser.memval[parser.memptr] + 1 > ushort.MaxValue)
+            {
+                parser.memval[parser.memptr] = 0;
+            }
+            else
+            {
+                parser.memval[parser.memptr]++;
+            }
+            parser.ptr++;
+        }
+        
+        internal void Run()
+        {
+            while (parser.ptr < parser.str.Length)
+            {
+                switch (parser.GetChar)
+                {
+                    case '+':
+                        Incr();
+                        parser.PrintMemory();
+                        break;
+                    case '-':
+                        if (parser.memval[parser.memptr] > 0)
+                        {
+                            parser.memval[parser.memptr]--;  
+                            parser.PrintMemory();
+                        }
+                        parser.ptr++;
+                        break;
+                    case '.':
+                        Console.WriteLine($"{(char)parser.memval[parser.memptr]} [{parser.memval[parser.memptr]}]");
+                        parser.ptr++;
+                        break;
+                    case ',' :
+                        if (ushort.TryParse(Console.ReadLine(), out parser.memval[parser.memptr]))
+                        {
+                            Console.WriteLine($"Parsed input and got {parser.memval[parser.memptr]}");
+                            parser.ptr++;
+                            parser.PrintMemory();
+                            break;
+                        }
+                        throw new Exception("Failed to parse input.");
+                    case '[':
+                        //Console.WriteLine("Got [ char...");
+                        if (parser.memval[parser.memptr] > 0)
+                        {
+                            //Console.WriteLine($"value is {parser.val}, entering loop");
+                            parser.ptr++;
+                            new Runner(parser);    
+                        }
+                        else
+                        {
+                            //Console.WriteLine("value was 0, seeking ]");
+                            while (parser.ptr < parser.str.Length && parser.GetChar != ']')
+                            {
+                                //Console.WriteLine($"\tskipped {parser.GetChar}");
+                                parser.ptr++;
+                            }
+                        }
+                        break;
+                    case ']':
+                        if (parser.memval[parser.memptr] == 0)
+                        {
+                            //Console.WriteLine($"] value is {parser.val}, breaking!");
+                            parser.ptr++;
+                            return;    
+                        }
+                        else
+                        {
+                            //Console.WriteLine($"] value is {parser.val}: jumping back to entry with value {parser.str[entry]}");
+                            parser.ptr = entry;
+                        }
+                        break;
+                    case '>' :
+                        if (parser.memptr < parser.memval.Length-1)
+                        {
+                            parser.memptr++;
+                            //Console.WriteLine($"moved right to {parser.memptr}");
+                        }
+                        else
+                        {
+                            parser.ptr++;
+                        }
+                        break;
+                    case '<' :
+                        if (parser.memptr > 0)
+                        {
+                            parser.memptr--;
+                        }
+                        else
+                        {
+                            parser.ptr++;
+                        }
+                        break;
+                    default :
+                        parser.ptr++;
+                        continue;
+                }
+                
+
+            }
+        }
+        
+    }
+    internal class TestParser
+    {
+        internal int ptr = 0;
+        internal string str = "+++++>+++[-<+>]";
+        internal ushort val = 0;
+        internal ushort[] memval = new ushort[4];
+        internal int memptr = 0;
+        internal char GetChar => str[ptr];
+        internal void Run()
+        {
+            new Runner(this);
+        }
+        
+        public void PrintMemory()
+        {
+            Console.Write("[");
+            foreach (ushort val in memval)
+            {
+                Console.Write($"{val}, ");
+            }
+            Console.WriteLine("]");
+        }
+    }
+    
     internal class  Program
     {
         public static void Main(string[] args)
         {
-
             Parser parser = new Parser().UseInterpreter(new BrainfuckInterpreter());
-            parser.ParseString(",.");
-            
-            /*
-            string file = File.ReadAllText("test.b");
-            new Compiler(file, new Data()).RegisterProcessor().Run();
-            */
+            parser.ParseString(">>>,>>,!<<<<<+++.@>.@+++++.@<.@>.@");
+            parser.Interpreter.PrintMemory();
+
+            //parser.ParseString("+++[.@-].@");
+  
         }
     }
 /*

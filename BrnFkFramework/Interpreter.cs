@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 
 namespace BrnFkFramework
 {
@@ -32,6 +33,29 @@ namespace BrnFkFramework
             {
                 
             }
+        }
+
+        public void Execute(ParseWorker pw)
+        {
+            
+        }
+
+        /// <summary>
+        /// Prints a segment of the interpreters working memory.
+        /// </summary>
+        /// <param name="start">index to read from</param>
+        /// <param name="limit">how many blocks of memory to read</param>
+        public void PrintMemory(int start = 0, int limit = 8)
+        {
+            StringBuilder sb = new StringBuilder().Append("[");
+            for (int i = 0; i < limit; i++)
+            {
+                sb.Append($"{WorkingMemory.Block[start + i]}, ");
+            }
+            sb.Remove(sb.Length-2, 2).Append("]");
+            Console.WriteLine(sb);
+            sb.Clear();
+            sb = null;
         }
         
     }

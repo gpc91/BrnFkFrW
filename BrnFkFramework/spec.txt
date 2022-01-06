@@ -1,0 +1,12 @@
+As well as regular Brainfuck commands, this Brainfuck interpreter features a few new commands, as well as some 
+command modifiers.
+
+Command Modifiers
+=================
+Command Modifiers are additional characters that you can use after certain instructions that change their behaviour.
+
+Print Modifiers
+
+Read Modifiers
+! - Reads the key press, taking the ASCII of the key pressed and placing it into the current memory cell.
+ 

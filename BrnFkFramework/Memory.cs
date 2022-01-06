@@ -8,7 +8,7 @@ namespace BrnFkFramework
         /// Get the position of the memory pointer
         /// </summary>
         public int Pointer { get; internal set; } = 0;
-        private byte[] Block;
+        internal byte[] Block;
         /// <summary>
         /// Get the byte at the currently pointed to cell.
         /// </summary>
@@ -78,6 +78,12 @@ namespace BrnFkFramework
         
     }
 
+    /// <summary>
+    /// Define the behaviour of any potential overflows
+    /// Default: Throw an out of bounds exception
+    /// Wrap: wrap around from Length-1 -> 0 or 0 -> Length-1
+    /// Block: block the pointer moving beyond the bounds of the array.
+    /// </summary>
     public enum OverflowBehaviour
     {
         Default,

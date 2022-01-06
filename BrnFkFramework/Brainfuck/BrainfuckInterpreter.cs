@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BrnFkFramework.Brainfuck.Instructions;
 
@@ -15,8 +16,8 @@ namespace BrnFkFramework.Brainfuck
                 {'-', new BrainfuckSub()}, // sub
                 {'>', new BrainfuckRight()}, // shr
                 {'<', new BrainfuckLeft()}, // shl
-                {'[', null}, // lpl
-                {']', null} // lpr
+                {'[', new BrainfuckCondLeft()}, // lpl
+                {']', new BrainfuckCondRight()} // lpr
             };
         }
         

@@ -51,6 +51,7 @@
         <Compile Include="BrainfuckRunner.cs" />
         <Compile Include="Brainfuck\BrainfuckInterpreter.cs" />
         <Compile Include="Brainfuck\Instructions\BrainfuckInstructions.cs" />
+        <Compile Include="Definitions\BrainfuckExtended.cs" />
         <Compile Include="IInstruction.cs" />
         <Compile Include="Interpreter.cs" />
         <Compile Include="Memory.cs" />

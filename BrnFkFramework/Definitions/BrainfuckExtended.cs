@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using BrnFkFramework.Brainfuck.Instructions;
 
-namespace BrnFkFramework.Brainfuck
+namespace BrnFkFramework.Definitions
 {
-    public class BrainfuckInterpreter : Interpreter
+    public class BrainfuckExtended : Interpreter
     {
-        public BrainfuckInterpreter(int allocatedMemory = 30000) : base(allocatedMemory)
+        public BrainfuckExtended(int allocatedMemory = 30000) : base(allocatedMemory)
         {
             Instructions = new Dictionary<char, IInstruction>()
             {
@@ -20,6 +19,5 @@ namespace BrnFkFramework.Brainfuck
                 {']', new BrainfuckCondRight()} // lpr
             };
         }
-        
     }
 }

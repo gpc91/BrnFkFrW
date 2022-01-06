@@ -23,7 +23,7 @@ namespace BrnFkFramework
         {
             WorkingMemory = new Memory(memorySize);
         }
-
+        
         public Parser Parse()
         {
             SourceParser = new Parser(this);

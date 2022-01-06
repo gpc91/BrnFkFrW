@@ -55,12 +55,12 @@ namespace BrnFkFramework
         public void PrintMemory(int start = 0, int limit = 8)
         {
             logger?.Debug("Printing Memory Block.");
-            StringBuilder sb = new StringBuilder().Append("[");
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < limit; i++)
             {
-                sb.Append($"{WorkingMemory.Block[start + i]}, ");
+                sb.Append($"[\x1b[32m{WorkingMemory.Block[start + i]}\x1b[0m]");
             }
-            sb.Remove(sb.Length-2, 2).Append("]");
+            //sb.Remove(sb.Length-2, 2).Append("]");
             Console.WriteLine(sb);
             sb.Clear();
         }

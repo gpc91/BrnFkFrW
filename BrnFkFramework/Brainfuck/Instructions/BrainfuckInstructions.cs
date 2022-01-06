@@ -46,7 +46,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
                     parser.Interpreter.logger?.Verbose($"Print instruction with modifier '#' (Mem)");
                     parser.Interpreter.PrintMemory();
                     parser.Interpreter.SourceParser.Pointer++;
-                    break;
+                    return;
                 default :
                     parser.Interpreter.logger?.Verbose($"Print instruction");
                     Console.Write($"{(char) cell}");

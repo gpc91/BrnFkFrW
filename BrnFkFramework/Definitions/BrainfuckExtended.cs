@@ -11,8 +11,8 @@ namespace BrnFkFramework.Definitions
             {
                 {'.', new BrainfuckPrint()}, // print
                 {',', new BrainfuckRead()}, // read
-                {'+', new BrainfuckAdd()}, // add
-                {'-', new BrainfuckSub()}, // sub
+                {'+', new ExtendedAdd()}, // add
+                {'-', new ExtendedSub()}, // sub
                 {'>', new BrainfuckRight()}, // shr
                 {'<', new BrainfuckLeft()}, // shl
                 {'[', new BrainfuckCondLeft()}, // lpl
@@ -20,4 +20,42 @@ namespace BrnFkFramework.Definitions
             };
         }
     }
+
+    public class ExtendedAdd : IInstruction
+    {
+        public void Execute(Parser parser)
+        {
+            switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
+            {
+                case '*':
+                    parser.Interpreter.logger?.Verbose("Cell Multiply");
+                    parser.Interpreter.WorkingMemory.Cell *= 2;
+                    return;
+                default:
+                    parser.Interpreter.logger?.Verbose("Cell Add");
+                    parser.Interpreter.WorkingMemory.Add();
+                    return;
+            }
+            parser.Interpreter.logger?.Verbose("Cell Add");
+        }
+    }
+
+    public class ExtendedSub : IInstruction
+    {
+        public void Execute(Parser parser)
+        {
+            switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
+            {
+                case '*':
+                    parser.Interpreter.logger?.Verbose("Cell Div");
+                    parser.Interpreter.WorkingMemory.Cell /= 2;
+                    return;
+                default:
+                    parser.Interpreter.logger?.Verbose("Cell Sub");
+                    parser.Interpreter.WorkingMemory.Sub();
+                    return;
+            }
+        }
+    }
+    
 }

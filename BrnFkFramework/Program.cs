@@ -14,50 +14,9 @@ namespace BrnFkFramework
     {
         public static void Main(string[] args)
         {
-
-            int value = 0;
-            
-            Dictionary<char, Func<bool>> d = new Dictionary<char, Func<bool>>()
-            {
-                {
-                    '+', () =>
-                    {
-                        Console.WriteLine("adderino");
-                        value++;
-                        return true;
-                    }
-                },
-                {
-                    '-', () =>
-                    {
-                        Console.WriteLine("subberini");
-                        value--;
-                        return true;
-                    }
-                },
-                {
-                    '.', () =>
-                    {
-                        Console.WriteLine(value);
-                        return true;
-                    }
-                }
-            };
-
-            d['.']();
-            d['+']();
-            d['.']();
-            d['-']();
-
-            //d.Add('.', () => { Console.WriteLine("DOT"); return true;});
-
-            d['.']();
-
-            Environment.Exit(1);
-            
-            BrainfuckInterpreter bfi = new BrainfuckInterpreter();
-            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Debug().CreateLogger());
-            bfi.Parse().ParseString("+++>++[-<+>].#");
+            BrainfuckExtended bfi = new BrainfuckExtended();
+            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Information().CreateLogger());
+            bfi.Parse().ParseString("+++*>++[-<+>]<.#");
         }
     }
 }

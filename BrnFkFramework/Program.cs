@@ -17,8 +17,11 @@ namespace BrnFkFramework
             brainfuck.Debug("+++.@");
             brainfuck.PrintMemory();
             */
+
+            BrainfuckInterpreter bfi = new BrainfuckInterpreter();
+            bfi.Parse().ParseString("+.@[.@-.@]");
+            bfi.PrintMemory();
             
-            new BrainfuckInterpreter().Parse().ParseString("+++>++<.@>.@");
             
             
             // Change all of the below to make the 'root' be the interpreter.

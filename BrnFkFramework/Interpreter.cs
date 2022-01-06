@@ -28,26 +28,23 @@ namespace BrnFkFramework
 
         public Parser Parse()
         {
-            return SourceParser = new Parser(this);
-        }
-
-        public void Execute(char input)
-        {
-            try
-            {
-                Instructions[input]?.Execute(this);
-            }
-            catch (Exception e)
-            {
-                
-            }
+            SourceParser = new Parser(this);
+            Console.WriteLine(SourceParser);
+            return SourceParser;
+            
         }
 
         public void Execute(Parser parser)
         {
             try
             {
-                Instructions[(char)this.InputStream.Read()]?.Execute(parser);
+                char instruction = (char) parser.Stream.Read();
+                //Console.WriteLine($"attempting execution of instruction {instruction}");
+                Instructions[instruction]?.Execute(parser);
+            }
+            catch (Exception e)
+            {
+                
             }
         }
 

@@ -11,7 +11,7 @@ namespace BrnFkFramework
         private Parser _parser;
         
         // the entry point of this worker (used for recursion)
-        private long entry;
+        internal long entry;
         
         internal Interpreter _interpreter;
         
@@ -28,7 +28,8 @@ namespace BrnFkFramework
             Console.WriteLine("Running new worker...");
             while (!_parser.Stream.EndOfStream)
             {
-                _parser.Interpreter.Execute((char)_parser.Stream.Read());
+                //_parser.Interpreter.Execute((char)_parser.Stream.Read());
+                throw new NotSupportedException();
             }
         }
     }
@@ -42,11 +43,12 @@ namespace BrnFkFramework
         /// the interpreter associated with this parser. 
         /// </summary>
         public Interpreter Interpreter;
-        private long _entry;
+        internal long entry;
         
         internal StreamReader Stream;
         internal StreamReader Reader => Stream;
-        
+
+        internal int Read => Interpreter.SourceParser.Reader.Read();
         
 
         internal int NextInstruction => Stream != null ? Stream.Peek() : -1;
@@ -54,7 +56,9 @@ namespace BrnFkFramework
         public Parser(Interpreter interpreter = null)
         {
             Interpreter = interpreter;
-            _entry = Interpreter.SourceParser.Stream.BaseStream.Position;
+            entry = Interpreter?.SourceParser?.Stream?.BaseStream != null ? Interpreter.SourceParser.Stream.BaseStream.Position : 0;
+            Console.WriteLine($"Created parser with entry point {entry}");
+            //Interpreter.SourceParser.Stream.BaseStream.Position;
         }
 
         public void Run()
@@ -72,21 +76,12 @@ namespace BrnFkFramework
         /// <param name="stream"></param>
         public void Parse(StreamReader sr)
         {
-            Console.WriteLine("Starting parse...");
             Stream = sr;
-            new Parser(Interpreter);
+            Run();
             //Reader = Stream;
             //Run(Stream);
         }
 
-        public void Run(StreamReader stream)
-        {
-            while (!stream.EndOfStream)
-            {
-                CurrentInstruction = stream.Read();
-                Interpreter.Execute((char)CurrentInstruction);
-            }
-        }
         public int CurrentInstruction = -1;
         /// <summary>
         /// parse the input from the given file and execute instructions with provided interpreter.
@@ -100,7 +95,8 @@ namespace BrnFkFramework
                 {
                     using (StreamReader sr = new(fs))
                     {
-                        Parse(sr);
+                        Stream = sr;
+                        Run();
                     }
                 }
             }
@@ -117,7 +113,9 @@ namespace BrnFkFramework
             {
                 using (StreamReader sr = new(ms))
                 {
-                    Parse(sr);
+                    Stream = sr;
+                    Console.WriteLine("Running String parse...");
+                    Run();
                 }
             }
         }

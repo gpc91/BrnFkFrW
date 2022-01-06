@@ -30,9 +30,8 @@ namespace BrnFkFramework
             throw new Exception("Read Error");
         }
 
-        internal bool EndOfInput => Pointer >= Interpreter.InputString.Length - 1;
+        internal bool EndOfInput => Pointer >= Interpreter.InputString.Length;
         
-
         internal int NextInstruction => Pointer < Interpreter.InputString.Length ? Interpreter.InputString[(int)Pointer+1] : -1;
         
         public Parser(Interpreter interpreter = null)
@@ -57,24 +56,6 @@ namespace BrnFkFramework
         /// <param name="file"></param>
         public void ParseFile(string file)
         {
-            /*
-            try
-            {
-                using (FileStream fs = File.OpenRead(file))
-                {
-                    using (StreamReader sr = new(fs))
-                    {
-                        Stream = sr;
-                        Run();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            */
             Interpreter.logger?.Debug($"Attempting to parse file: {file}");
             Interpreter.InputString = File.ReadAllText(file);
             Run();
@@ -82,17 +63,6 @@ namespace BrnFkFramework
 
         public void ParseString(string str)
         {
-            /*
-            using (MemoryStream ms = new(Encoding.ASCII.GetBytes(str)))
-            {
-                using (StreamReader sr = new(ms))
-                {
-                    Stream = sr;
-                    Console.WriteLine("Running String parse...");
-                    Run();
-                }
-            }
-            */
             Interpreter.logger?.Debug("Attempting to parse string.");
             Interpreter.InputString = str;
             Run();

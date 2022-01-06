@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,9 +15,11 @@ namespace BrnFkFramework
     {
         public static void Main(string[] args)
         {
-            BrainfuckExtended bfi = new BrainfuckExtended();
-            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Information().CreateLogger());
-            bfi.Parse().ParseString("+++*>++[-<+>]<.#");
+            BrainfuckInterpreter bfi = new BrainfuckInterpreter();
+            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Verbose().CreateLogger());
+            //bfi.Parse().ParseString("+++>++[-<+>]<.#");
+            bfi.Parse().ParseFile("addition.b");
+            bfi.PrintMemory();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
 
 namespace BrnFkFramework.Brainfuck.Instructions
@@ -24,33 +25,43 @@ namespace BrnFkFramework.Brainfuck.Instructions
     {
         public void Execute(Parser parser)
         {
-            byte cell = parser.Interpreter.WorkingMemory.Cell;
-            switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
+            // TODO: Make this better. Right now it is lame and doesn't properly handle last characters
+            if (parser.Interpreter.SourceParser.EndOfInput)
             {
-                case '!' :
-                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '!' (Int)");
-                    Console.WriteLine($"{cell}");
-                    parser.Interpreter.SourceParser.Pointer++;
-                    return;
-                case '@':
-                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '@' (Ext)");
-                    Console.WriteLine($"{(char)cell} ({cell})");
-                    parser.Interpreter.SourceParser.Pointer++;
-                    return;
-                case '£' :
-                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '£' (Int Ext)");
-                    Console.WriteLine($"{cell} ({(int)cell})");
-                    parser.Interpreter.SourceParser.Pointer++;
-                    return;
-                case '#' :
-                    parser.Interpreter.logger?.Verbose($"Print instruction with modifier '#' (Mem)");
-                    parser.Interpreter.PrintMemory();
-                    parser.Interpreter.SourceParser.Pointer++;
-                    return;
-                default :
-                    parser.Interpreter.logger?.Verbose($"Print instruction");
-                    Console.Write($"{(char) cell}");
-                    return;
+                parser.Interpreter.logger?.Verbose($"Print instruction");
+                Console.Write($"{(char) parser.Interpreter.WorkingMemory.Cell}");
+            }
+            else
+            {
+                byte cell = parser.Interpreter.WorkingMemory.Cell;
+                parser.Interpreter.logger?.Fatal(parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer].ToString());
+                switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
+                {
+                    case '!' :
+                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '!' (Int)");
+                        Console.WriteLine($"{cell}");
+                        parser.Interpreter.SourceParser.Pointer++;
+                        return;
+                    case '@':
+                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '@' (Ext)");
+                        Console.WriteLine($"{(char)cell} ({cell})");
+                        parser.Interpreter.SourceParser.Pointer++;
+                        return;
+                    case '£' :
+                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '£' (Int Ext)");
+                        Console.WriteLine($"{cell} ({(int)cell})");
+                        parser.Interpreter.SourceParser.Pointer++;
+                        return;
+                    case '#' :
+                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '#' (Mem)");
+                        parser.Interpreter.PrintMemory();
+                        parser.Interpreter.SourceParser.Pointer++;
+                        return;
+                    default :
+                        parser.Interpreter.logger?.Verbose($"Print instruction");
+                        Console.Write($"{(char) cell}");
+                        return;
+                }    
             }
         }
     }

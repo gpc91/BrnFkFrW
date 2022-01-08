@@ -10,3 +10,14 @@ Print Modifiers
 Read Modifiers
 ! - Reads the key press, taking the ASCII of the key pressed and placing it into the current memory cell.
  
+ 
+ //
+ 
+ //bfi.Parse().ParseString("+++>++[-<+>]<.#");
+             //bfi.Parse().ParseString("-[-[-[-[-[-[-[-[-]>>>]>>>]>>>]>>>]>>>]>>>]>>>]>>>+");
+             //bfi.Parse().ParseString("[[+-[+-]>+<-]>++<]"); // Recursion fixer!!!
+             //bfi.Parse().ParseString("++>+++<[>[->+<]<-]"); // Double tested recursion
+             //bfi.Parse().ParseString("++[-[-[-[-[-[-[-[-]>]>]>]>]>]>]>]++.");
+             //bfi.Parse().ParseString("+++[-[-[-[-]>]>]>]++."); // this is broken... breaks out too early
+             //bfi.Parse().ParseString("++[->+++[->+<]<]>>[-<<+>>]]"); // multiply
+             //bfi.Parse().ParseString("+[- > +]-");

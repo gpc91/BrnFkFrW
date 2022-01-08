@@ -128,6 +128,14 @@ namespace BrnFkFramework.Brainfuck.Instructions
                 {
                     char instr = (char) parser.Interpreter.SourceParser.CurrentInstruction;
 
+                    if (instr == '[')
+                    {
+                        parser.Interpreter.logger?.Fatal($"Found new conditional. Entering...");
+                        new Parser(parser.Interpreter).Run();
+                    }
+
+                    parser.Interpreter.SourceParser.Pointer++;
+                    /*
                     switch (instr)
                     {
                         case '[':
@@ -146,6 +154,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
                     {
                         parser.Interpreter.SourceParser.Pointer++;
                     }
+                    */
                 }
             }
         }
@@ -161,7 +170,10 @@ namespace BrnFkFramework.Brainfuck.Instructions
             }
             else
             {
-                parser.Stop();
+                if (parser != parser.Interpreter.SourceParser)
+                {
+                    parser.Stop();
+                }
             }
         }
     }

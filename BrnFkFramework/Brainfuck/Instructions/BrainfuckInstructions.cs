@@ -34,7 +34,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
             else
             {
                 byte cell = parser.Interpreter.WorkingMemory.Cell;
-                parser.Interpreter.logger?.Fatal(parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer].ToString());
+                //parser.Interpreter.logger?.Fatal(parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer].ToString());
                 switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
                 {
                     case '!' :
@@ -71,13 +71,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
         {
             switch (parser.Interpreter.InputString[(int)parser.Interpreter.SourceParser.Pointer])
             {
-                case '!' :
-                    parser.Interpreter.logger?.Verbose($"Read instruction with modifier '!' (Char)");
-                    byte val = (byte) Console.Read();
-                    parser.Interpreter.WorkingMemory.Cell = val;
-                    Console.WriteLine(); // clear to next line to correct printing
-                    return;
-                default:
+                case '*' :
                     parser.Interpreter.logger?.Verbose($"Read instruction (Explicit)");
                     byte _b;
                     if (byte.TryParse(Console.ReadLine(), out _b))
@@ -90,6 +84,12 @@ namespace BrnFkFramework.Brainfuck.Instructions
                         parser.Interpreter.logger?.Fatal($"Explicit Read instruction failed.");
                         throw new Exception("Failed to read input.");
                     }
+                default:
+                    parser.Interpreter.logger?.Verbose($"Read instruction");
+                    byte val = (byte) Console.Read();
+                    parser.Interpreter.WorkingMemory.Cell = val;
+                    //Console.WriteLine(); // clear to next line to correct printing
+                    return;
             }
         }
     }
@@ -125,12 +125,25 @@ namespace BrnFkFramework.Brainfuck.Instructions
             {
                 parser.Interpreter.logger?.Debug($"Condition was not met at memory cell {parser.Interpreter.WorkingMemory.Pointer}, skipping block...");
                 int skips = 0;
-                while ((char) parser.Interpreter.SourceParser.Stream.Peek() != ']')
+                while (parser.isRunning && !parser.Interpreter.SourceParser.EndOfInput && parser.Interpreter.SourceParser.CurrentInstruction != ']')
                 {
-                    parser.Interpreter.SourceParser.Pointer++;
-                    skips++;
+                    char instr = (char) parser.Interpreter.SourceParser.CurrentInstruction;
+
+                    switch (instr)
+                    {
+                        case '[':
+                            parser.Interpreter.logger?.Fatal($"Found new loop while skipping. Entering...");
+                            new Parser(parser.Interpreter).Run();
+                            break;
+                        case ']':
+                            parser.Interpreter.SourceParser.Pointer++;
+                            continue;
+                         default: 
+                             parser.Interpreter.SourceParser.Pointer++;
+                             break;
+
+                    }
                 }
-                parser.Interpreter.logger?.Debug($"Skipped {skips} character.");
             }
         }
     }
@@ -145,6 +158,8 @@ namespace BrnFkFramework.Brainfuck.Instructions
             }
             else
             {
+                //parser.Interpreter.WorkingMemory.Pointer++;
+                parser.Stop();
                 return;
             }
         }

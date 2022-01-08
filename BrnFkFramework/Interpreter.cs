@@ -37,8 +37,6 @@ namespace BrnFkFramework
             {
                 char instruction = (char) SourceParser.Read();
                 logger?.Verbose($"Attempting to execute instruction '{instruction}'");
-                //Console.WriteLine(instruction);
-                //Console.WriteLine($"attempting execution of instruction {instruction}");
                 Instructions[instruction]?.Execute(parser);
             }
             catch (Exception e)

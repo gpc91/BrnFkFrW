@@ -16,10 +16,15 @@ namespace BrnFkFramework
         public static void Main(string[] args)
         {
             BrainfuckInterpreter bfi = new BrainfuckInterpreter();
-            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Verbose().CreateLogger());
-            //bfi.Parse().ParseString("+++>++[-<+>]<.#");
-            bfi.Parse().ParseFile("addition.b");
+            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Debug().CreateLogger());
             bfi.PrintMemory();
+            //bfi.Parse().ParseString("+++>++[-<+>]<.#");
+            //bfi.Parse().ParseString("-[-[-[-[-[-[-[-[-]>>>]>>>]>>>]>>>]>>>]>>>]>>>]>>>+");
+            //bfi.Parse().ParseString("[[+-[+-]>+<-]>++<]"); // Recursion fixer!!!
+            //bfi.Parse().ParseString("++>+++<[>[->+<]<-]"); // Double tested recursion
+            bfi.Parse().ParseString("++[-[-[-[-[-[-[-[-]>]>]>]>]>]>]>]++.");
+            bfi.PrintMemory(limit: 50);
+            Console.WriteLine(bfi.WorkingMemory.Pointer);
         }
     }
 }

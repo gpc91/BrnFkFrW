@@ -18,6 +18,8 @@ namespace BrnFkFramework
         internal long entry;
         internal long Pointer = 0;
 
+        internal bool isRunning = false;
+        
         internal StreamReader Stream;
         internal StreamReader Reader => Stream;
 
@@ -32,8 +34,24 @@ namespace BrnFkFramework
 
         internal bool EndOfInput => Pointer >= Interpreter.InputString.Length;
         
-        internal int NextInstruction => Pointer < Interpreter.InputString.Length ? Interpreter.InputString[(int)Pointer+1] : -1;
-        
+        internal int NextInstruction
+        {
+            get
+            {
+                if (!Interpreter.SourceParser.EndOfInput)
+                {
+                    return Interpreter.InputString[(int) Interpreter.SourceParser.Pointer + 1];
+                }
+                else
+                {
+                    throw new Exception("End of Stream");
+                }
+                return Pointer < Interpreter.InputString.Length ? Interpreter.InputString[(int) Pointer + 1] : -1;
+            }
+        }
+
+        internal int CurrentInstruction => Interpreter.InputString[(int) Interpreter.SourceParser.Pointer];
+
         public Parser(Interpreter interpreter = null)
         {
             Interpreter = interpreter;
@@ -44,10 +62,16 @@ namespace BrnFkFramework
 
         public void Run()
         {
-            while (!Interpreter.SourceParser.EndOfInput)
+            isRunning = true;
+            while (isRunning && !Interpreter.SourceParser.EndOfInput)
             {
                 Interpreter.Execute(this);
             }
+        }
+
+        public void Stop()
+        {
+            isRunning = false;
         }
 
         /// <summary>

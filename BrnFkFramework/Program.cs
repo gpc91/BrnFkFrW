@@ -22,8 +22,10 @@ namespace BrnFkFramework
             //bfi.Parse().ParseString("-[-[-[-[-[-[-[-[-]>>>]>>>]>>>]>>>]>>>]>>>]>>>]>>>+");
             //bfi.Parse().ParseString("[[+-[+-]>+<-]>++<]"); // Recursion fixer!!!
             //bfi.Parse().ParseString("++>+++<[>[->+<]<-]"); // Double tested recursion
-            bfi.Parse().ParseString("++[-[-[-[-[-[-[-[-]>]>]>]>]>]>]>]++.");
-            bfi.PrintMemory(limit: 50);
+            //bfi.Parse().ParseString("++[-[-[-[-[-[-[-[-]>]>]>]>]>]>]>]++.");
+            //bfi.Parse().ParseString("++[-[-[-[-]>]>]>]++."); // this is broken... breaks out too early
+            bfi.Parse().ParseString("[-]+");
+            bfi.PrintMemory(limit: 10);
             Console.WriteLine(bfi.WorkingMemory.Pointer);
         }
     }

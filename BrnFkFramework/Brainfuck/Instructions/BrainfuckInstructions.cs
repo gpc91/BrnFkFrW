@@ -124,7 +124,6 @@ namespace BrnFkFramework.Brainfuck.Instructions
             else
             {
                 parser.Interpreter.logger?.Debug($"Condition was not met at memory cell {parser.Interpreter.WorkingMemory.Pointer}, skipping block...");
-                int skips = 0;
                 while (parser.isRunning && !parser.Interpreter.SourceParser.EndOfInput && parser.Interpreter.SourceParser.CurrentInstruction != ']')
                 {
                     char instr = (char) parser.Interpreter.SourceParser.CurrentInstruction;
@@ -136,12 +135,16 @@ namespace BrnFkFramework.Brainfuck.Instructions
                             new Parser(parser.Interpreter).Run();
                             break;
                         case ']':
-                            parser.Interpreter.SourceParser.Pointer++;
-                            continue;
+                            break;
                          default: 
                              parser.Interpreter.SourceParser.Pointer++;
                              break;
 
+                    }
+
+                    if (instr == ']' && parser.Interpreter.WorkingMemory.Cell == 0)
+                    {
+                        parser.Interpreter.SourceParser.Pointer++;
                     }
                 }
             }
@@ -158,9 +161,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
             }
             else
             {
-                //parser.Interpreter.WorkingMemory.Pointer++;
                 parser.Stop();
-                return;
             }
         }
     }

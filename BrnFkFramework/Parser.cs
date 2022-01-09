@@ -51,6 +51,7 @@ namespace BrnFkFramework
         }
 
         internal int CurrentInstruction => Interpreter.InputString[(int) Interpreter.SourceParser.Pointer];
+        internal int LastInstruction { get; set; }
 
         public Parser(Interpreter interpreter = null)
         {
@@ -68,7 +69,7 @@ namespace BrnFkFramework
                 Interpreter.Execute(this);
             }
         }
-
+        
         public void Stop()
         {
             isRunning = false;

@@ -35,13 +35,14 @@ namespace BrnFkFramework
         {
             try
             {
-                char instruction = (char) SourceParser.Read();
-                logger?.Verbose($"Attempting to execute instruction '{instruction}'");
-                Instructions[instruction]?.Execute(parser);
+                //char instruction = (char) SourceParser.Read();
+                SourceParser.LastInstruction = SourceParser.Read();
+                logger?.Verbose($"Attempting to execute instruction '{SourceParser.LastInstruction}'");
+                Instructions[(char) SourceParser.LastInstruction]?.Execute(parser);
             }
             catch (Exception e)
             {
-                
+                logger?.Error($"Unrecognised character {SourceParser.LastInstruction}");
             }
         }
 
@@ -50,13 +51,13 @@ namespace BrnFkFramework
         /// </summary>
         /// <param name="start">index to read from</param>
         /// <param name="limit">how many blocks of memory to read</param>
-        public void PrintMemory(int start = 0, int limit = 8)
+        public void PrintMemory(int start = 0, int limit = 8, bool hex = false)
         {
             logger?.Debug("Printing Memory Block.");
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < limit; i++)
             {
-                sb.Append($"[\x1b[32m{WorkingMemory.Block[start + i]}\x1b[0m]");
+                sb.Append($"[\x1b[32m{(hex == true ? String.Format("{0:X2}", WorkingMemory.Block[start + i]) : WorkingMemory.Block[start + i])}\x1b[0m]");
             }
             //sb.Remove(sb.Length-2, 2).Append("]");
             Console.WriteLine(sb);

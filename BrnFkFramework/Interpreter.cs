@@ -57,7 +57,11 @@ namespace BrnFkFramework
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < limit; i++)
             {
-                sb.Append($"[\x1b[32m{(hex == true ? String.Format("{0:X2}", WorkingMemory.Block[start + i]) : WorkingMemory.Block[start + i])}\x1b[0m]");
+                // ptr allows us to wrap the index so that we can always under/overflow correctly and print surrounding
+                // the current memory block
+                int ptr = (start + i) % WorkingMemory.Block.Length;
+                ptr = ptr < 0 ? (WorkingMemory.Block.Length + ptr) : ptr;
+                sb.Append($"[\x1b[32m{(hex == true ? String.Format("{0:X2}", WorkingMemory.Block[ptr]) : WorkingMemory.Block[ptr])}\x1b[0m]");
             }
             //sb.Remove(sb.Length-2, 2).Append("]");
             Console.WriteLine(sb);

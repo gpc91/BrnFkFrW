@@ -16,10 +16,8 @@ namespace BrnFkFramework
         public static void Main(string[] args)
         {
             BrainfuckInterpreter bfi = new BrainfuckInterpreter();
-            //bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Fatal().CreateLogger());
-            bfi.PrintMemory(hex: true);
-            bfi.Parse().ParseFile("sandbox.bf");
-            bfi.PrintMemory(limit: 20, hex: true);
+            bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Fatal().CreateLogger());
+            bfi.Parse().ParseFile("hello_world.b");
         }
     }
 }

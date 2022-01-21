@@ -38,24 +38,24 @@ namespace BrnFkFramework.Brainfuck.Instructions
                 switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
                 {
                     case '!' :
-                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '!' (Int)");
+                        parser.Interpreter.logger?.Verbose($"Print instruction with Integer modifier '!'");
                         Console.WriteLine($"{cell}");
                         parser.Interpreter.SourceParser.Pointer++;
                         return;
-                    case '@':
-                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '@' (Ext)");
-                        Console.WriteLine($"{(char)cell} ({cell})");
+                    case '&' :
+                        parser.Interpreter.logger?.Verbose($"Print instruction with Detail modifier '&'");
+                        int ptr = parser.Interpreter.WorkingMemory.Pointer;
+                        Console.WriteLine($"[{ptr}] {(char)cell} ({(int)cell}) #{String.Format("{0:X2}", cell)}");
                         parser.Interpreter.SourceParser.Pointer++;
                         return;
-                    case '£' :
-                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '£' (Int Ext)");
-                        Console.WriteLine($"{cell} ({(int)cell})");
+                    case '@' :
+                        parser.Interpreter.logger?.Verbose($"Print instruction with Mem modifier '@'");
+                        parser.Interpreter.PrintMemory(start: parser.Interpreter.WorkingMemory.Pointer-3, limit: 7, hex: true);
                         parser.Interpreter.SourceParser.Pointer++;
                         return;
                     case '#' :
-                        parser.Interpreter.logger?.Verbose($"Print instruction with modifier '#' (Mem)");
-                        parser.Interpreter.PrintMemory();
-                        parser.Interpreter.SourceParser.Pointer++;
+                        parser.Interpreter.logger?.Verbose($"Print instruction with Hex modifier '#'");
+                        Console.WriteLine("{0:X2}", cell);
                         return;
                     default :
                         parser.Interpreter.logger?.Verbose($"Print instruction");

@@ -18,11 +18,8 @@ namespace BrnFkFramework
         internal long entry;
         internal long Pointer = 0;
 
-        internal bool isRunning = false;
+        internal bool IsRunning = false;
         
-        internal StreamReader Stream;
-        internal StreamReader Reader => Stream;
-
         internal int Read()
         {
             if (Pointer < Interpreter.InputString.Length)
@@ -63,8 +60,8 @@ namespace BrnFkFramework
 
         public void Run()
         {
-            isRunning = true;
-            while (isRunning && !Interpreter.SourceParser.EndOfInput)
+            IsRunning = true;
+            while (IsRunning && !Interpreter.SourceParser.EndOfInput)
             {
                 Interpreter.Execute(this);
             }
@@ -72,13 +69,13 @@ namespace BrnFkFramework
         
         public void Stop()
         {
-            isRunning = false;
+            IsRunning = false;
         }
 
         /// <summary>
         /// parse the input from the given file and execute instructions with provided interpreter.
         /// </summary>
-        /// <param name="file"></param>
+        /// <param name="file">Brainfuck file to be parsed.</param>
         public void ParseFile(string file)
         {
             Interpreter.logger?.Debug($"Attempting to parse file: {file}");
@@ -86,6 +83,10 @@ namespace BrnFkFramework
             Run();
         }
 
+        /// <summary>
+        /// Parse the input from the provided string and execute instructions with the provided interpreter.
+        /// </summary>
+        /// <param name="str">Brainfuck string to be parsed.</param>
         public void ParseString(string str)
         {
             Interpreter.logger?.Debug("Attempting to parse string.");

@@ -34,7 +34,6 @@ namespace BrnFkFramework.Brainfuck.Instructions
             else
             {
                 byte cell = parser.Interpreter.WorkingMemory.Cell;
-                //parser.Interpreter.logger?.Fatal(parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer].ToString());
                 switch (parser.Interpreter.InputString[(int) parser.Interpreter.SourceParser.Pointer])
                 {
                     case '!' :
@@ -124,7 +123,7 @@ namespace BrnFkFramework.Brainfuck.Instructions
             else
             {
                 parser.Interpreter.logger?.Debug($"Condition was not met at memory cell {parser.Interpreter.WorkingMemory.Pointer}, skipping block...");
-                while (parser.isRunning && !parser.Interpreter.SourceParser.EndOfInput && parser.Interpreter.SourceParser.CurrentInstruction != ']')
+                while (parser.IsRunning && !parser.Interpreter.SourceParser.EndOfInput && parser.Interpreter.SourceParser.CurrentInstruction != ']')
                 {
                     char instr = (char) parser.Interpreter.SourceParser.CurrentInstruction;
 
@@ -135,31 +134,12 @@ namespace BrnFkFramework.Brainfuck.Instructions
                     }
 
                     parser.Interpreter.SourceParser.Pointer++;
-                    /*
-                    switch (instr)
-                    {
-                        case '[':
-                            parser.Interpreter.logger?.Fatal($"Found new loop while skipping. Entering...");
-                            new Parser(parser.Interpreter).Run();
-                            break;
-                        case ']':
-                            break;
-                         default: 
-                             parser.Interpreter.SourceParser.Pointer++;
-                             break;
-
-                    }
-
-                    if (instr == ']' && parser.Interpreter.WorkingMemory.Cell == 0)
-                    {
-                        parser.Interpreter.SourceParser.Pointer++;
-                    }
-                    */
                 }
             }
         }
     }
     
+    //TODO: The conditional right needs to be more thoroughly fixed so that it no longer breaks out of the root parser
     public class BrainfuckCondRight : IInstruction
     { 
         public void Execute(Parser parser)

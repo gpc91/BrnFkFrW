@@ -14,10 +14,10 @@ namespace BrnFkFramework.Brainfuck
                 {',', new BrainfuckRead()}, // read
                 {'+', new BrainfuckAdd()}, // add
                 {'-', new BrainfuckSub()}, // sub
-                {'>', new BrainfuckRight()}, // shr
-                {'<', new BrainfuckLeft()}, // shl
-                {'[', new BrainfuckCondLeft()}, // lpl
-                {']', new BrainfuckCondRight()} // lpr
+                {'>', new BrainfuckRight()}, // shift right
+                {'<', new BrainfuckLeft()}, // shift left
+                {'[', new BrainfuckCondLeft()}, // conditional jump left
+                {']', new BrainfuckCondRight()} // conditional jump right
             };
         }
         

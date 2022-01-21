@@ -17,7 +17,7 @@ namespace BrnFkFramework
         {
             BrainfuckInterpreter bfi = new BrainfuckInterpreter();
             bfi.UseLogger(new LoggerConfiguration().WriteTo.Console().MinimumLevel.Fatal().CreateLogger());
-            bfi.Parse().ParseFile("hello_world.b");
+            bfi.SourceParser.ParseFile("hello_world.b");
         }
     }
 }

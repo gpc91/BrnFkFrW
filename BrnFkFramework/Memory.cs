@@ -18,16 +18,34 @@ namespace BrnFkFramework
             internal set { Block[Pointer] = value; }
         }
 
+        /// <summary>
+        /// Specify the overflow behaviour when the memory pointer under/overflows.
+        /// </summary>
         public OverflowBehaviour PointerOverflow { get; internal set; } = OverflowBehaviour.Default;
 
+        /// <summary>
+        /// The byte array size
+        /// </summary>
+        /// <param name="memorySize">(optional) size of array</param>
         public Memory(int memorySize = 30000)
         {
             Block = new byte[memorySize];
         }
 
+        /// <summary>
+        /// Increment and return the currently pointed to memory block
+        /// </summary>
+        /// <returns>value of cell that has been incremented</returns>
         public byte Add() => Block[Pointer]++;
+        /// <summary>
+        /// Decrement and return the currently pointed to memory block
+        /// </summary>
+        /// <returns>value of cell that has been decremented</returns>
         public byte Sub() => Block[Pointer]--;
         
+        /// <summary>
+        /// Advance the memory pointer forward, adhering to any overflow rules specified.
+        /// </summary>
         public void Next()
         {
             switch (PointerOverflow)
@@ -50,6 +68,9 @@ namespace BrnFkFramework
                     return;
             }
         }
+        /// <summary>
+        /// Retreats the memory pointer back, adhering to any overflow rules specified.
+        /// </summary>
         public void Prev()
         {
             switch (PointerOverflow)
@@ -73,21 +94,33 @@ namespace BrnFkFramework
             }
         }
 
+        /// <summary>
+        /// Shift the memory pointer forward. <see cref="Next"/>
+        /// </summary>
         public void Right() => Next();
+        /// <summary>
+        /// Shift the memory pointer backwards. <see cref="Prev"/>
+        /// </summary>
         public void Left() => Prev();
         
     }
 
     /// <summary>
-    /// Define the behaviour of any potential overflows
-    /// Default: Throw an out of bounds exception
-    /// Wrap: wrap around from Length-1 -> 0 or 0 -> Length-1
-    /// Block: block the pointer moving beyond the bounds of the array.
+    /// Define the behaviour of any potential overflows when advancing or retreating the pointer.
     /// </summary>
     public enum OverflowBehaviour
     {
+        /// <summary>
+        /// No under/overflow protection will be used when advancing or retreating the pointer and will throw <see cref="IndexOutOfRangeException"/> if accessed  
+        /// </summary>
         Default,
+        /// <summary>
+        /// When advancing or retreating the memory pointer the pointer will wrap
+        /// </summary>
         Wrap,
+        /// <summary>
+        /// When advancing or retreating the memory pointer it will be blocked from advancing or retreating beyond the bounds of the memory array
+        /// </summary>
         Block
     }
     

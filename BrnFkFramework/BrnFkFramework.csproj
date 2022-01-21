@@ -48,7 +48,6 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="BrainfuckRunner.cs" />
         <Compile Include="Brainfuck\BrainfuckInterpreter.cs" />
         <Compile Include="Brainfuck\Instructions\BrainfuckInstructions.cs" />
         <Compile Include="Definitions\BrainfuckExtended.cs" />

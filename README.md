@@ -3,6 +3,9 @@
 
 Standard commands supported with the addition of command modifiers.
 
+Utilizes Serilog for logging events and errors.
+
+## Modifiers
 For debugging purposes, included are a number of basic modifiers.
 
 Read (`,`) modifiers:
@@ -17,3 +20,5 @@ Print (`.`) Modifiers:
 - Mem At (`@`):
     - Prints out the currently pointed to memory cell and the 6 surrounding cells.
     - `[memory index] char (int) #hex`
+
+Some elements are a bit wonky and still being worked on.

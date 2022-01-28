@@ -1,6 +1,8 @@
 # BrnFkFrW
 .Net Framework Brainfuck Interpreter.
 
+Allows for easy exansibility by providing interfaces that can be used to define custom tokens for use by the interpreter.
+
 Standard commands supported with the addition of command modifiers.
 
 Utilizes Serilog for logging events and errors.
